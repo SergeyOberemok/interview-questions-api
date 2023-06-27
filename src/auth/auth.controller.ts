@@ -1,14 +1,12 @@
-import { Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { SecureUserDto } from 'src/users/models';
+import { IUserToken } from 'src/users/models';
 
 @Controller('auth')
 export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
-  public login(@Request() request): SecureUserDto {
-    const { email } = request.user;
-
-    return { email };
+  public login(@Body() userDto: Record<string, any>): IUserToken {
+    return { email: userDto.email, token: '123' };
   }
 }
