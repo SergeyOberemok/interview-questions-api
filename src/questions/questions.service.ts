@@ -1,28 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { from, Observable } from 'rxjs';
-import {
-  CreateQuestionDto,
-  Question,
-  QuestionDocument,
-  UpdateQuestionDto,
-} from './models';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { CreateQuestionCommand } from './commands/create-question.command';
+import { CreateQuestionDto, UpdateQuestionDto } from './dto';
+import { FindAllQuestionsQuery } from './queries/find-all-questions.query';
+import { Question } from './schema/question.schema';
 
 @Injectable()
 export class QuestionsService {
-  constructor(
-    @InjectModel(Question.name) private questionModel: Model<QuestionDocument>,
-  ) {}
+  constructor(private commandBus: CommandBus, private queryBus: QueryBus) {}
 
-  create(createQuestionDto: CreateQuestionDto): Observable<Question> {
-    const question = new this.questionModel(createQuestionDto);
-
-    return from(question.save());
+  async create(createQuestionDto: CreateQuestionDto): Promise<Question> {
+    return this.commandBus.execute(
+      new CreateQuestionCommand(createQuestionDto),
+    );
   }
 
-  findAll(): Observable<Question[]> {
-    return from(this.questionModel.find().exec());
+  findAll() {
+    return this.queryBus.execute(new FindAllQuestionsQuery());
   }
 
   findOne(id: number) {

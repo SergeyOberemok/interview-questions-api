@@ -7,15 +7,16 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { CreateQuestionDto, UpdateQuestionDto } from './models/dto';
+import { CreateQuestionDto, UpdateQuestionDto } from './dto';
 import { QuestionsService } from './questions.service';
+import { Question } from './schema/question.schema';
 
 @Controller('questions')
 export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
 
   @Post()
-  create(@Body() createQuestionDto: CreateQuestionDto) {
+  create(@Body() createQuestionDto: CreateQuestionDto): Promise<Question> {
     return this.questionsService.create(createQuestionDto);
   }
 
