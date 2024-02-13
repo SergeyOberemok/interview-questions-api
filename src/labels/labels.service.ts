@@ -1,15 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { CreateLabelDto } from './model/dto/create-label.dto';
-import { UpdateLabelDto } from './model/dto/update-label.dto';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { CreateLabelCommand } from './commands';
+import { CreateLabelDto } from './dto/create-label.dto';
+import { UpdateLabelDto } from './dto/update-label.dto';
+import { FindAllLabelsQuery } from './queries';
 
 @Injectable()
 export class LabelsService {
-  create(createLabelDto: CreateLabelDto) {
-    return 'This action adds a new label';
+  constructor(private commandBus: CommandBus, private queryBus: QueryBus) {}
+
+  async create(createLabelDto: CreateLabelDto) {
+    return this.commandBus.execute(new CreateLabelCommand(createLabelDto));
   }
 
   findAll() {
-    return `This action returns all labels`;
+    return this.queryBus.execute(new FindAllLabelsQuery());
   }
 
   findOne(id: number) {

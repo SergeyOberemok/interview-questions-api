@@ -1,7 +1,7 @@
-import { QuestionCommandsRepository } from './question-commands.repository';
 import { QuestionQueriesRepository } from './question-queries.repository';
+import { QuestionRepository } from './question.repository';
 
 export const questionRepositories = [
-  QuestionCommandsRepository,
+  QuestionRepository,
   QuestionQueriesRepository,
 ];

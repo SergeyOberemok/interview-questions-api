@@ -1,15 +1,15 @@
 import { CommandHandler } from '@nestjs/cqrs';
-import { QuestionCommandsRepository } from '../repositories/question-commands.repository';
+import { QuestionRepository } from '../repositories/question.repository';
 import { Question } from '../schema/question.schema';
 import { CreateQuestionCommand } from './create-question.command';
 
 @CommandHandler(CreateQuestionCommand)
-export class CreateQuestionHandler {
-  constructor(private questionCommandsRepository: QuestionCommandsRepository) {}
+export class CreateQuestionCommandHandler {
+  constructor(private questionsRepository: QuestionRepository) {}
 
-  async execute(command: CreateQuestionCommand): Promise<Question> {
-    const { createQuestionDto } = command;
-
-    return this.questionCommandsRepository.create(createQuestionDto);
+  async execute({
+    createQuestionDto,
+  }: CreateQuestionCommand): Promise<Question> {
+    return this.questionsRepository.create(createQuestionDto);
   }
 }

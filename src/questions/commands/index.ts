@@ -1,3 +1,5 @@
-import { CreateQuestionHandler } from './create-question.handler';
+import { CreateQuestionCommandHandler } from './create-question.handler';
 
-export const questionCommandHandlers = [CreateQuestionHandler];
+export * from './create-question.command';
+
+export const questionCommandHandlers = [CreateQuestionCommandHandler];

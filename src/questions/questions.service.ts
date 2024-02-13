@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateQuestionCommand } from './commands/create-question.command';
+import { CreateLabelIfNotExistCommand } from 'src/labels/commands';
+import { CreateLabelDto } from 'src/labels/dto';
+import { CreateQuestionCommand } from './commands';
 import { CreateQuestionDto, UpdateQuestionDto } from './dto';
-import { FindAllQuestionsQuery } from './queries/find-all-questions.query';
+import { FindAllQuestionsQuery } from './queries';
 import { Question } from './schema/question.schema';
 
 @Injectable()
@@ -10,6 +12,12 @@ export class QuestionsService {
   constructor(private commandBus: CommandBus, private queryBus: QueryBus) {}
 
   async create(createQuestionDto: CreateQuestionDto): Promise<Question> {
+    this.commandBus.execute(
+      new CreateLabelIfNotExistCommand(
+        createQuestionDto.labels.map((label) => new CreateLabelDto(label)),
+      ),
+    );
+
     return this.commandBus.execute(
       new CreateQuestionCommand(createQuestionDto),
     );

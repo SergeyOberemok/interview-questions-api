@@ -5,7 +5,7 @@ import { CreateQuestionDto } from '../dto';
 import { Question } from '../schema/question.schema';
 
 @Injectable()
-export class QuestionCommandsRepository {
+export class QuestionRepository {
   constructor(
     @InjectModel(Question.name) private questionModel: Model<Question>,
   ) {}
