@@ -8,8 +8,8 @@ import {
   Delete,
 } from '@nestjs/common';
 import { LabelsService } from './labels.service';
-import { CreateLabelDto } from './model/dto/create-label.dto';
-import { UpdateLabelDto } from './model/dto/update-label.dto';
+import { CreateLabelDto } from './dto/create-label.dto';
+import { UpdateLabelDto } from './dto/update-label.dto';
 
 @Controller('labels')
 export class LabelsController {
