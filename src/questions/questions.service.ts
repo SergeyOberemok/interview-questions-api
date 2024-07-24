@@ -1,30 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateLabelIfNotExistCommand } from 'src/labels/commands';
 import { CreateLabelDto } from 'src/labels/dto';
-import { CreateQuestionCommand } from './commands';
+import { LabelsService } from 'src/labels/labels.service';
 import { CreateQuestionDto, UpdateQuestionDto } from './dto';
-import { FindAllQuestionsQuery } from './queries';
+import { QuestionQueriesRepository } from './repositories/question-queries.repository';
+import { QuestionRepository } from './repositories/question.repository';
 import { Question } from './schema/question.schema';
 
 @Injectable()
 export class QuestionsService {
-  constructor(private commandBus: CommandBus, private queryBus: QueryBus) {}
+  constructor(
+    private labelsService: LabelsService,
+    private questionsRepository: QuestionRepository,
+    private questionQueriesRepository: QuestionQueriesRepository,
+  ) {}
 
   async create(createQuestionDto: CreateQuestionDto): Promise<Question> {
-    this.commandBus.execute(
-      new CreateLabelIfNotExistCommand(
-        createQuestionDto.labels.map((label) => new CreateLabelDto(label)),
-      ),
+    this.labelsService.createOrExisting(
+      createQuestionDto.labels.map((label) => new CreateLabelDto(label)),
     );
 
-    return this.commandBus.execute(
-      new CreateQuestionCommand(createQuestionDto),
-    );
+    return this.questionsRepository.create(createQuestionDto);
   }
 
   findAll() {
-    return this.queryBus.execute(new FindAllQuestionsQuery());
+    return this.questionQueriesRepository.findAll();
   }
 
   findOne(id: number) {

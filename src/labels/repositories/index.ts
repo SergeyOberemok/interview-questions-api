@@ -1,4 +1,2 @@
-import { LabelQueriesRepository } from './label-queries.repository';
-import { LabelRepository } from './label.repository';
-
-export const labelsRepositories = [LabelRepository, LabelQueriesRepository];
+export * from './label-queries.repository';
+export * from './label.repository';

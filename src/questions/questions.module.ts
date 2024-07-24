@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
-import { CqrsModule } from '@nestjs/cqrs';
 import { MongooseModule } from '@nestjs/mongoose';
-import { questionCommandHandlers } from './commands';
-import { questionQueryHandlers } from './queries';
+import { LabelsModule } from 'src/labels/labels.module';
 import { QuestionsController } from './questions.controller';
 import { QuestionsService } from './questions.service';
-import { questionRepositories } from './repositories';
+import { QuestionQueriesRepository, QuestionRepository } from './repositories';
 import { Question, QuestionSchema } from './schema/question.schema';
 
 @Module({
@@ -13,14 +11,9 @@ import { Question, QuestionSchema } from './schema/question.schema';
     MongooseModule.forFeature([
       { name: Question.name, schema: QuestionSchema },
     ]),
-    CqrsModule,
+    LabelsModule,
   ],
   controllers: [QuestionsController],
-  providers: [
-    QuestionsService,
-    ...questionRepositories,
-    ...questionCommandHandlers,
-    ...questionQueryHandlers,
-  ],
+  providers: [QuestionsService, QuestionRepository, QuestionQueriesRepository],
 })
 export class QuestionsModule {}

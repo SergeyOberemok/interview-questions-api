@@ -1,9 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import { ILabel, Label as LabelEntity } from '../entities/label.entity';
+
+export interface ILabel {
+  name: string;
+}
 
 @Schema()
-export class Label extends LabelEntity implements ILabel {
+export class Label implements ILabel {
   @Prop({ required: true })
   name: string;
 }

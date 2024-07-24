@@ -1,4 +1,4 @@
-import { IQuestion } from '../entities/question.entity';
+import { IQuestion } from '../schema/question.schema';
 
 export class CreateQuestionDto implements IQuestion {
   description: string;

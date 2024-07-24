@@ -1,4 +1,4 @@
-import { ILabel } from '../entities/label.entity';
+import { ILabel } from '../schemas/label.schema';
 
 export class CreateLabelDto implements ILabel {
   constructor(name?: string) {

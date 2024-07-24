@@ -1,7 +1,2 @@
-import { QuestionQueriesRepository } from './question-queries.repository';
-import { QuestionRepository } from './question.repository';
-
-export const questionRepositories = [
-  QuestionRepository,
-  QuestionQueriesRepository,
-];
+export * from './question-queries.repository';
+export * from './question.repository';
