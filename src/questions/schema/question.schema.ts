@@ -7,7 +7,9 @@ export interface IQuestion {
   labels: string[];
 }
 
-@Schema()
+@Schema({
+  toJSON: { virtuals: true, versionKey: false },
+})
 export class Question implements IQuestion {
   @Prop({ required: true })
   description: string;
