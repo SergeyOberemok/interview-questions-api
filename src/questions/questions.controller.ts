@@ -17,6 +17,10 @@ export class QuestionsController {
 
   @Post()
   create(@Body() createQuestionDto: CreateQuestionDto): Promise<Question> {
+    if (!Object.values(createQuestionDto).length) {
+      return Promise.reject('Object is empty');
+    }
+
     return this.questionsService.create(createQuestionDto);
   }
 
