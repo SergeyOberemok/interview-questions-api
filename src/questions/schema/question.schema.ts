@@ -4,6 +4,7 @@ import { HydratedDocument } from 'mongoose';
 export interface IQuestion {
   description: string;
   answers: string[];
+  notes: string;
   labels: string[];
 }
 
@@ -15,6 +16,8 @@ export class Question implements IQuestion {
   description: string;
   @Prop()
   answers: string[];
+  @Prop()
+  notes: string;
   @Prop()
   labels: string[];
 }
