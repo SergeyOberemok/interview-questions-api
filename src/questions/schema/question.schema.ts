@@ -3,9 +3,14 @@ import { HydratedDocument } from 'mongoose';
 
 export interface IQuestion {
   description: string;
-  answers: string[];
+  answers: IAnswer[];
   notes: string;
   labels: string[];
+}
+
+export interface IAnswer {
+  answer: string;
+  type?: string;
 }
 
 @Schema({
@@ -15,7 +20,7 @@ export class Question implements IQuestion {
   @Prop({ required: true })
   description: string;
   @Prop()
-  answers: string[];
+  answers: IAnswer[];
   @Prop()
   notes: string;
   @Prop()
