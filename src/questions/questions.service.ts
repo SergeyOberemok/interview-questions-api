@@ -22,8 +22,17 @@ export class QuestionsService {
     return this.questionsRepository.create(createQuestionDto);
   }
 
-  findAll() {
-    return this.questionQueriesRepository.findAll();
+  findAll(
+    page: number,
+    size: number,
+  ): Promise<{ questions: Question[]; total: number }> {
+    return Promise.all([
+      this.questionQueriesRepository.findAll(page, size),
+      this.questionQueriesRepository.countAll(),
+    ]).then(([questions, total]) => ({
+      questions,
+      total,
+    }));
   }
 
   findOne(id: number) {

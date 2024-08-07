@@ -9,7 +9,15 @@ export class QuestionQueriesRepository {
     @InjectModel(Question.name) private questionModel: Model<Question>,
   ) {}
 
-  async findAll(): Promise<Question[]> {
-    return this.questionModel.find().exec();
+  async findAll(page: number, size: number): Promise<Question[]> {
+    return this.questionModel
+      .find()
+      .limit(size)
+      .skip((page - 1) * size)
+      .exec();
+  }
+
+  async countAll(): Promise<number> {
+    return this.questionModel.countDocuments();
   }
 }
