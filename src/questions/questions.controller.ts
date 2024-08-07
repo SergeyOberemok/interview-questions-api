@@ -4,8 +4,10 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CreateQuestionDto, UpdateQuestionDto } from './dto';
 import { QuestionsService } from './questions.service';
@@ -24,9 +26,28 @@ export class QuestionsController {
     return this.questionsService.create(createQuestionDto);
   }
 
+  @Post('many')
+  createMany(
+    @Body() createQuestionDtos: CreateQuestionDto[],
+  ): Promise<Question[]> {
+    const result = createQuestionDtos
+      .filter(
+        (createQuestionDto: CreateQuestionDto) =>
+          Object.values(createQuestionDto).length > 0,
+      )
+      .map((createQuestionDto: CreateQuestionDto) =>
+        this.questionsService.create(createQuestionDto),
+      );
+
+    return Promise.all(result);
+  }
+
   @Get()
-  findAll() {
-    return this.questionsService.findAll();
+  findAll(
+    @Query('page', ParseIntPipe) page: number = 1,
+    @Query('size', ParseIntPipe) size: number = 10,
+  ): Promise<{ questions: Question[]; total: number }> {
+    return this.questionsService.findAll(page, size);
   }
 
   @Get(':id')
