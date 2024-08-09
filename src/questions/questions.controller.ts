@@ -46,8 +46,9 @@ export class QuestionsController {
   findAll(
     @Query('page', ParseIntPipe) page: number = 1,
     @Query('size', ParseIntPipe) size: number = 10,
+    @Query('search') search: string = '',
   ): Promise<{ questions: Question[]; total: number }> {
-    return this.questionsService.findAll(page, size);
+    return this.questionsService.findAll(page, size, search);
   }
 
   @Get(':id')
