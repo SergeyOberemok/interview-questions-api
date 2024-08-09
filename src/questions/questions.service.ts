@@ -25,10 +25,11 @@ export class QuestionsService {
   findAll(
     page: number,
     size: number,
+    search: string,
   ): Promise<{ questions: Question[]; total: number }> {
     return Promise.all([
-      this.questionQueriesRepository.findAll(page, size),
-      this.questionQueriesRepository.countAll(),
+      this.questionQueriesRepository.findAll(page, size, search),
+      this.questionQueriesRepository.countAll(search),
     ]).then(([questions, total]) => ({
       questions,
       total,

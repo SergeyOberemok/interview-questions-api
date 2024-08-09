@@ -9,15 +9,31 @@ export class QuestionQueriesRepository {
     @InjectModel(Question.name) private questionModel: Model<Question>,
   ) {}
 
-  async findAll(page: number, size: number): Promise<Question[]> {
+  async findAll(
+    page: number,
+    size: number,
+    search: string,
+  ): Promise<Question[]> {
     return this.questionModel
-      .find()
+      .find(this.prepareFilter(search))
       .limit(size)
       .skip((page - 1) * size)
       .exec();
   }
 
-  async countAll(): Promise<number> {
-    return this.questionModel.countDocuments();
+  async countAll(search: string): Promise<number> {
+    return this.questionModel.countDocuments(this.prepareFilter(search));
+  }
+
+  private prepareFilter(search: string) {
+    if (!search) {
+      return {};
+    }
+
+    const regex = new RegExp(`.*${search}.*`, 'i');
+
+    return {
+      $or: [{ description: regex }, { notes: regex }, { labels: regex }],
+    };
   }
 }
