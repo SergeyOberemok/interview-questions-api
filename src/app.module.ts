@@ -8,6 +8,8 @@ import { MongoUriFactory } from './core/shared';
 import { LabelsModule } from './labels/labels.module';
 import { QuestionsModule } from './questions/questions.module';
 import { UsersModule } from './users/users.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -20,6 +22,9 @@ import { UsersModule } from './users/users.module';
       envFilePath: [
         process.env.NODE_ENV?.trim() === 'prod' ? '.env' : '.dev.env',
       ],
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client'),
     }),
     AuthModule,
     UsersModule,
