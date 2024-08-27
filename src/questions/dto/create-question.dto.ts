@@ -1,4 +1,5 @@
-import { IAnswer, IQuestion } from '../schema/question.schema';
+import { IQuestion } from '../schema/question.schema';
+import { IAnswer } from '../shared';
 
 export class CreateQuestionDto implements IQuestion {
   description: string;
