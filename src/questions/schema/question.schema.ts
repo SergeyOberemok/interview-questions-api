@@ -1,16 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import { IAnswer } from '../shared';
 
 export interface IQuestion {
   description: string;
   answers: IAnswer[];
   notes: string;
   labels: string[];
-}
-
-export interface IAnswer {
-  answer: string;
-  type?: string;
 }
 
 @Schema({
