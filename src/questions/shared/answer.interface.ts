@@ -1,5 +1,5 @@
 export interface IAnswer {
-  title: string;
+  title?: string;
   answer: string;
   type?: string;
 }
