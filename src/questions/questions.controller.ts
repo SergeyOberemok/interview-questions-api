@@ -9,6 +9,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { CleanPipe } from 'src/core/pipes';
 import { CreateQuestionDto, UpdateQuestionDto } from './dto';
 import { QuestionsService } from './questions.service';
 import { Question } from './schema/question.schema';
@@ -46,7 +47,7 @@ export class QuestionsController {
   findAll(
     @Query('page', ParseIntPipe) page: number = 1,
     @Query('size', ParseIntPipe) size: number = 10,
-    @Query('search') search: string = '',
+    @Query('search', CleanPipe) search: string = '',
   ): Promise<{ questions: Question[]; total: number }> {
     return this.questionsService.findAll(page, size, search);
   }
