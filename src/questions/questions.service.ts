@@ -36,15 +36,15 @@ export class QuestionsService {
     }));
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} question`;
+  findOne(id: string): Promise<Question> {
+    return this.questionQueriesRepository.find(id);
   }
 
-  update(id: number, updateQuestionDto: UpdateQuestionDto) {
-    return `This action updates a #${id} question`;
+  update(id: string, updateQuestionDto: UpdateQuestionDto) {
+    return this.questionsRepository.update(id, updateQuestionDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} question`;
+  remove(id: string) {
+    return this.questionsRepository.remove(id);
   }
 }
