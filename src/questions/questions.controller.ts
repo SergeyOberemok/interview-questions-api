@@ -13,13 +13,16 @@ import { CleanPipe } from 'src/core/pipes';
 import { CreateQuestionDto, UpdateQuestionDto } from './dto';
 import { QuestionsService } from './questions.service';
 import { Question } from './schema/question.schema';
+import { QuestionPipe } from './pipes/question.pipe';
 
 @Controller('questions')
 export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
 
   @Post()
-  create(@Body() createQuestionDto: CreateQuestionDto): Promise<Question> {
+  create(
+    @Body(new QuestionPipe()) createQuestionDto: CreateQuestionDto,
+  ): Promise<Question> {
     if (!Object.values(createQuestionDto).length) {
       return Promise.reject('Object is empty');
     }
@@ -54,19 +57,19 @@ export class QuestionsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.questionsService.findOne(+id);
+    return this.questionsService.findOne(id);
   }
 
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() updateQuestionDto: UpdateQuestionDto,
+    @Body(new QuestionPipe()) updateQuestionDto: UpdateQuestionDto,
   ) {
-    return this.questionsService.update(+id, updateQuestionDto);
+    return this.questionsService.update(id, updateQuestionDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.questionsService.remove(+id);
+    return this.questionsService.remove(id);
   }
 }

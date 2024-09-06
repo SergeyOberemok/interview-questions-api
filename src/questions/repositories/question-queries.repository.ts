@@ -41,4 +41,8 @@ export class QuestionQueriesRepository {
       makeInFilter('labels', makeRegExps(words)),
     ]);
   }
+
+  async find(id: string): Promise<Question> {
+    return this.questionModel.findById(id);
+  }
 }
