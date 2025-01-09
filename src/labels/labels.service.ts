@@ -13,26 +13,19 @@ export class LabelsService {
   ) {}
 
   async create(createLabelDto: CreateLabelDto) {
-    return this.labelsRepository.create(createLabelDto);
+    return this.labelsRepository.createIfNotExist(createLabelDto);
   }
 
-  async createOrExisting(createLabelDtos: CreateLabelDto[]): Promise<Label[]> {
-    const existedLabels = await this.labelQueriesRepository.findAll({
-      name: { $in: createLabelDtos.map(({ name }: CreateLabelDto) => name) },
-    });
+  findAll(search: string) {
+    return this.labelQueriesRepository.findAll(search);
+  }
 
-    const labelsToCreate = createLabelDtos.filter(
-      ({ name }: CreateLabelDto) =>
-        !existedLabels.some((label: Label) => label.name === name),
+  async findAllOrCreate(createLabelDtos: CreateLabelDto[]): Promise<Label[]> {
+    return Promise.all(
+      createLabelDtos.map((createLabelDto) =>
+        this.labelsRepository.createIfNotExist(createLabelDto),
+      ),
     );
-
-    return labelsToCreate.length > 0
-      ? this.labelsRepository.createMany(labelsToCreate)
-      : [];
-  }
-
-  findAll() {
-    return this.labelQueriesRepository.findAll();
   }
 
   findOne(id: number) {

@@ -15,9 +15,11 @@ export class QuestionsService {
   ) {}
 
   async create(createQuestionDto: CreateQuestionDto): Promise<Question> {
-    this.labelsService.createOrExisting(
+    const labels = await this.labelsService.findAllOrCreate(
       createQuestionDto.labels.map((label) => new CreateLabelDto(label)),
     );
+
+    createQuestionDto.labels = labels.map((label) => label.name);
 
     return this.questionsRepository.create(createQuestionDto);
   }

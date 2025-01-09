@@ -1,15 +1,17 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
 } from '@nestjs/common';
-import { LabelsService } from './labels.service';
+import { CleanPipe } from 'src/core/pipes';
 import { CreateLabelDto } from './dto/create-label.dto';
 import { UpdateLabelDto } from './dto/update-label.dto';
+import { LabelsService } from './labels.service';
 
 @Controller('labels')
 export class LabelsController {
@@ -21,8 +23,8 @@ export class LabelsController {
   }
 
   @Get()
-  findAll() {
-    return this.labelsService.findAll();
+  findAll(@Query('search', CleanPipe) search: string = '') {
+    return this.labelsService.findAll(search);
   }
 
   @Get(':id')
