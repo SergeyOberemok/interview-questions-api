@@ -1,0 +1,9 @@
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: interview-questions-api/Dockerfile
+    ports:
+      - "8080:3000"
+    environment:
+      NODE_ENV: prod
