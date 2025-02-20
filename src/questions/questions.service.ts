@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateLabelDto } from 'src/labels/dto';
 import { LabelsService } from 'src/labels/labels.service';
 import { CreateQuestionDto, UpdateQuestionDto } from './dto';
 import { QuestionQueriesRepository } from './repositories/question-queries.repository';
@@ -16,12 +15,13 @@ export class QuestionsService {
 
   async create(createQuestionDto: CreateQuestionDto): Promise<Question> {
     const labels = await this.labelsService.findAllOrCreate(
-      createQuestionDto.labels.map((label) => new CreateLabelDto(label)),
+      createQuestionDto.labels,
     );
 
-    createQuestionDto.labels = labels.map((label) => label.name);
-
-    return this.questionsRepository.create(createQuestionDto);
+    return this.questionsRepository.create({
+      ...createQuestionDto,
+      labels,
+    });
   }
 
   findAll(

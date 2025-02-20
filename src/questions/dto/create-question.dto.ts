@@ -1,9 +1,11 @@
+import { ILabel } from 'src/labels/schemas/label.schema';
+import { IAnswer } from '../schema';
 import { IQuestion } from '../schema/question.schema';
-import { IAnswer } from '../shared';
 
 export class CreateQuestionDto implements IQuestion {
   description: string;
   answers: IAnswer[];
-  notes: string;
-  labels: string[];
+  labels: ILabel[];
+  notes?: string;
+  image?: Buffer;
 }

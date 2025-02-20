@@ -5,11 +5,14 @@ export interface ILabel {
   name: string;
 }
 
-@Schema()
+@Schema({
+  toJSON: { versionKey: false },
+})
 export class Label implements ILabel {
   @Prop({ required: true })
   name: string;
 }
 
-export type LabelDocument = HydratedDocument<Label>;
 export const LabelSchema = SchemaFactory.createForClass(Label);
+
+export type LabelDocument = HydratedDocument<Label>;

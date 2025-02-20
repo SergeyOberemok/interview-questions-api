@@ -4,16 +4,19 @@ import {
   Delete,
   Get,
   Param,
+  ParseArrayPipe,
   ParseIntPipe,
   Patch,
   Post,
   Query,
 } from '@nestjs/common';
+import * as _ from 'lodash';
 import { CleanPipe } from 'src/core/pipes';
 import { CreateQuestionDto, UpdateQuestionDto } from './dto';
+import { QuestionImageTransformPipe } from './pipes/question-image-transform.pipe';
+import { QuestionLabelsTransformPipe } from './pipes/question-labels-transform.pipe';
 import { QuestionsService } from './questions.service';
 import { Question } from './schema/question.schema';
-import { QuestionPipe } from './pipes/question.pipe';
 
 @Controller('questions')
 export class QuestionsController {
@@ -21,24 +24,19 @@ export class QuestionsController {
 
   @Post()
   create(
-    @Body(new QuestionPipe()) createQuestionDto: CreateQuestionDto,
+    @Body(new QuestionLabelsTransformPipe(), new QuestionImageTransformPipe())
+    createQuestionDto: CreateQuestionDto,
   ): Promise<Question> {
-    if (!Object.values(createQuestionDto).length) {
-      return Promise.reject('Object is empty');
-    }
-
     return this.questionsService.create(createQuestionDto);
   }
 
   @Post('many')
   createMany(
-    @Body() createQuestionDtos: CreateQuestionDto[],
+    @Body(new ParseArrayPipe({ items: CreateQuestionDto }))
+    createQuestionDtos: CreateQuestionDto[],
   ): Promise<Question[]> {
     const result = createQuestionDtos
-      .filter(
-        (createQuestionDto: CreateQuestionDto) =>
-          Object.values(createQuestionDto).length > 0,
-      )
+      .filter(_.isEmpty)
       .map((createQuestionDto: CreateQuestionDto) =>
         this.questionsService.create(createQuestionDto),
       );
@@ -63,7 +61,8 @@ export class QuestionsController {
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body(new QuestionPipe()) updateQuestionDto: UpdateQuestionDto,
+    @Body(new QuestionLabelsTransformPipe(), new QuestionImageTransformPipe())
+    updateQuestionDto: UpdateQuestionDto,
   ) {
     return this.questionsService.update(id, updateQuestionDto);
   }

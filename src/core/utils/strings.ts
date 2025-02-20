@@ -16,3 +16,7 @@ export function removeUnnecessarySigns(sentence: string): string {
     sentence,
   );
 }
+
+export function stripBase64(base64) {
+  return base64.substring(base64.indexOf(',') + 1);
+}
