@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { makeEqualFilter, makeInFilter, makeOrFilter } from 'src/core/mongo';
-import { makeOrRegExp, makeRegExps } from 'src/core/utils';
+import { makeLikeRegExp, makeRegExps } from 'src/core/utils';
 import { Question } from '../schema/question.schema';
 
 @Injectable()
@@ -32,13 +32,9 @@ export class QuestionQueriesRepository {
       return {};
     }
 
-    const words = search.split(' ');
-    const regex = makeOrRegExp(words);
-
     return makeOrFilter([
-      makeEqualFilter('description', regex),
-      makeEqualFilter('notes', regex),
-      makeInFilter('labels', makeRegExps(words)),
+      makeEqualFilter('description', makeLikeRegExp(search)),
+      makeInFilter('labels', makeRegExps(search.split(' '))),
     ]);
   }
 
