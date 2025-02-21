@@ -7,3 +7,4 @@ services:
       - "8080:3000"
     environment:
       NODE_ENV: prod
+    restart: unless-stopped

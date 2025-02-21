@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 COPY ./interview-questions-ui/package*.json ./
 COPY ./interview-questions-ui ./
 
-# RUN ls -a
+RUN ls -a
 
 RUN npm install
 RUN npm install rimraf --save-dev
@@ -25,7 +25,7 @@ COPY --from=ui /usr/src/app/dist ./client
 COPY ./interview-questions-api/package*.json ./
 COPY ./interview-questions-api ./
 
-# RUN ls -a
+RUN ls -a
 
 RUN npm install
 

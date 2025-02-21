@@ -1,0 +1,10 @@
+interview-questions-api/.git
+interview-questions-api/.vscode
+interview-questions-api/client
+interview-questions-api/dist
+interview-questions-api/node_modules
+
+interview-questions-ui/.git
+interview-questions-ui/.vscode
+interview-questions-ui/dist
+interview-questions-ui/node_modules
