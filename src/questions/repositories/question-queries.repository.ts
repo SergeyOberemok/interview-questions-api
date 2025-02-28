@@ -34,7 +34,7 @@ export class QuestionQueriesRepository {
 
     return makeOrFilter([
       makeEqualFilter('description', makeLikeRegExp(search)),
-      makeInFilter('labels', makeRegExps(search.split(' '))),
+      makeInFilter('labels.name', makeRegExps(search.split(' '))),
     ]);
   }
 
