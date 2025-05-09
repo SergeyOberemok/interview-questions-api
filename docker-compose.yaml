@@ -4,7 +4,7 @@ services:
       context: ..
       dockerfile: interview-questions-api/Dockerfile
     ports:
-      - "8080:3000"
+      - "3030:3000"
     environment:
       NODE_ENV: prod
     restart: unless-stopped
