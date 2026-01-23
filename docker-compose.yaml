@@ -8,3 +8,5 @@ services:
     environment:
       NODE_ENV: prod
     restart: unless-stopped
+    image: interview-questions-api
+    container_name: interview-questions-api

@@ -22,6 +22,7 @@ COPY --from=ui /usr/src/app/dist ./client
 
 COPY ./interview-questions-api/package*.json ./
 COPY ./interview-questions-api ./
+COPY ./interview-questions-api/.env.docker ./.env
 
 RUN npm install
 
