@@ -18,7 +18,11 @@ import { UsersModule } from './users/users.module';
       useFactory: MongoUriFactory,
       inject: [ConfigService],
     }),
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      envFilePath: [
+        process.env.NODE_ENV?.trim() === 'prod' ? '.env' : '.env.dev',
+      ],
+    }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'client'),
     }),
