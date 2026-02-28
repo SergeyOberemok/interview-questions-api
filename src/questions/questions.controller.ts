@@ -22,6 +22,20 @@ import { Question } from './schema/question.schema';
 export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
 
+  @Get()
+  findAll(
+    @Query('page', ParseIntPipe) page: number = 1,
+    @Query('size', ParseIntPipe) size: number = 10,
+    @Query('search', CleanPipe) search: string = '',
+  ): Promise<{ questions: Question[]; total: number }> {
+    return this.questionsService.findAll(page, size, search);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.questionsService.findOne(id);
+  }
+
   @Post()
   create(
     @Body(new QuestionLabelsTransformPipe(), new QuestionImageTransformPipe())
@@ -42,20 +56,6 @@ export class QuestionsController {
       );
 
     return Promise.all(result);
-  }
-
-  @Get()
-  findAll(
-    @Query('page', ParseIntPipe) page: number = 1,
-    @Query('size', ParseIntPipe) size: number = 10,
-    @Query('search', CleanPipe) search: string = '',
-  ): Promise<{ questions: Question[]; total: number }> {
-    return this.questionsService.findAll(page, size, search);
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.questionsService.findOne(id);
   }
 
   @Patch(':id')

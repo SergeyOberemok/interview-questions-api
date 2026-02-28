@@ -2,11 +2,32 @@ services:
   app:
     build:
       context: ..
-      dockerfile: interview-questions-api/Dockerfile
-    ports:
-      - "3030:3000"
-    environment:
-      NODE_ENV: prod
-    restart: unless-stopped
+      dockerfile: ./interview-questions-api/Dockerfile
     image: interview-questions-api
     container_name: interview-questions-api
+    restart: unless-stopped
+    ports:
+      - "${EXT_APP_PORT}:3000"
+    environment:
+      NODE_ENV: prod
+    depends_on:
+      - db
+  db:
+    image: mongo
+    container_name: interview-questions-api-db
+    restart: unless-stopped
+    ports:
+      - "${EXT_DATABASE_PORT}:27017"
+    expose:
+      - "${EXT_DATABASE_PORT}"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpwd
+      MONGO_INITDB_DATABASE: ${DATABASE_DB}
+    volumes:
+      - db_data:/data/db
+      - db_data:/data/configdb
+      - ./scripts:/docker-entrypoint-initdb.d:ro
+
+volumes:
+  db_data:
