@@ -7,6 +7,8 @@ export function MongoUriFactory(configService: ConfigService): {
     configService.get<string>('DATABASE_URI') || process.env.DATABASE_URI;
   const host =
     configService.get<string>('DATABASE_HOST') || process.env.DATABASE_HOST;
+  const port =
+    configService.get<string>('DATABASE_PORT') || process.env.DATABASE_PORT;
   const database =
     configService.get<string>('DATABASE_DB') || process.env.DATABASE_DB;
   const user =
@@ -16,6 +18,7 @@ export function MongoUriFactory(configService: ConfigService): {
 
   uri = uri
     .replace('${DATABASE_HOST}', host)
+    .replace('${DATABASE_PORT}', port)
     .replace('${DATABASE_DB}', database);
 
   if (user) {

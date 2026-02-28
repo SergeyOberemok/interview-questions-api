@@ -1,0 +1,11 @@
+@host = localhost
+@port = 3000
+@protocol = http
+
+@api = {{protocol}}://{{host}}:{{port}}/api
+
+###
+
+GET {{api}}/questions?page=1&size=10
+
+###
