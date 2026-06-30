@@ -3,7 +3,7 @@ import { HydratedDocument } from 'mongoose';
 
 export interface IAnswer {
   title?: string;
-  answer: string;
+  detail: string;
   type?: string;
   note?: string;
 }
@@ -15,7 +15,7 @@ export class Answer implements IAnswer {
   @Prop()
   title?: string;
   @Prop({ required: true })
-  answer: string;
+  detail: string;
   @Prop()
   type?: string;
   @Prop()
@@ -24,4 +24,4 @@ export class Answer implements IAnswer {
 
 export const AnswerSchema = SchemaFactory.createForClass(Answer);
 
-export type AnswerDocucume = HydratedDocument<Answer>;
+export type AnswerDocument = HydratedDocument<Answer>;

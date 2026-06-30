@@ -3,7 +3,7 @@ import { IAnswer } from '../schema';
 import { IQuestion } from '../schema/question.schema';
 
 export class CreateQuestionDto implements IQuestion {
-  description: string;
+  definition: string;
   answers: IAnswer[];
   labels: ILabel[];
   notes?: string;

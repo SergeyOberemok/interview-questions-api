@@ -4,7 +4,7 @@ import { ILabel, Label, LabelSchema } from 'src/labels/schemas/label.schema';
 import { Answer, AnswerSchema, IAnswer } from './answer.schema';
 
 export interface IQuestion {
-  description: string;
+  definition: string;
   answers: IAnswer[];
   labels: ILabel[];
   notes?: string;
@@ -19,7 +19,7 @@ export interface IQuestion {
 })
 export class Question implements IQuestion {
   @Prop({ required: true })
-  description: string;
+  definition: string;
   @Prop([AnswerSchema])
   answers: Answer[];
   @Prop()
