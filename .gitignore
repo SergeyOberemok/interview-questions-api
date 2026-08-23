@@ -3,6 +3,10 @@
 /client
 /node_modules
 
+# static assets (served from /assets)
+/public/*
+!/public/.gitkeep
+
 # Logs
 logs
 *.log
@@ -33,3 +37,6 @@ lerna-debug.log*
 
 .env*
 !.env.example
+
+# self-signed dev certs
+/nginx/certs

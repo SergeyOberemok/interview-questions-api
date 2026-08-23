@@ -46,6 +46,5 @@ $ chmod +x ./docker-compose.sh
 $ ./docker-compose.sh
 
 # docker up
-docker compose -f docker-compose.yaml --env-file .env.docker up -d --build
+docker compose -f docker-compose.yaml up -d --build
 ```
-
