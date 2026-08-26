@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ApiProperty } from '@nestjs/swagger';
 import { HydratedDocument } from 'mongoose';
 
 export interface ILabel {
@@ -10,6 +11,7 @@ export interface ILabel {
 })
 export class Label implements ILabel {
   @Prop({ required: true })
+  @ApiProperty()
   name: string;
 }
 

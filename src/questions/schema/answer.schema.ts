@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { HydratedDocument } from 'mongoose';
 
 export interface IAnswer {
@@ -13,12 +14,16 @@ export interface IAnswer {
 })
 export class Answer implements IAnswer {
   @Prop()
+  @ApiPropertyOptional()
   title?: string;
   @Prop({ required: true })
+  @ApiProperty()
   detail: string;
   @Prop()
+  @ApiPropertyOptional()
   type?: string;
   @Prop()
+  @ApiPropertyOptional()
   note?: string;
 }
 
