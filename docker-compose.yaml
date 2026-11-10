@@ -21,10 +21,9 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: prod
+      DATABASE_URI: ${DATABASE_URI:?DATABASE_URI is required}
     volumes:
       - ./public:/usr/src/app/public
-    depends_on:
-      - db
 
   tuition:
     build:
@@ -34,28 +33,4 @@ services:
     container_name: interview-tuition-api
     restart: unless-stopped
     environment:
-      # Shared user lives in the main db, so authenticate against it
-      DB_URI: mongodb://${DATABASE_USER}:${DATABASE_PASS}@db:27017/${TUITION_DATABASE_DB}?authSource=${DATABASE_DB}
-    depends_on:
-      - db
-
-  db:
-    image: mongo
-    container_name: interview-questions-api-db
-    restart: unless-stopped
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER:?MONGO_ROOT_USER is required}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASS:?MONGO_ROOT_PASS is required}
-      MONGO_INITDB_DATABASE: ${DATABASE_DB}
-      # Consumed by scripts/*.js (init scripts) to create app users
-      DATABASE_DB: ${DATABASE_DB}
-      DATABASE_USER: ${DATABASE_USER:?DATABASE_USER is required}
-      DATABASE_PASS: ${DATABASE_PASS:?DATABASE_PASS is required}
-      TUITION_DATABASE_DB: ${TUITION_DATABASE_DB}
-    volumes:
-      - db_data:/data/db
-      - db_data:/data/configdb
-      - ./scripts:/docker-entrypoint-initdb.d:ro
-
-volumes:
-  db_data:
+      DB_URI: ${TUITION_DATABASE_URI:?TUITION_DATABASE_URI is required}

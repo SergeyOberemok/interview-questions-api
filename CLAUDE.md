@@ -27,7 +27,7 @@ There's no local MongoDB assumption baked into `npm test` — unit tests run aga
 
 ## Environment & running against MongoDB
 
-Config comes through `@nestjs/config` (`ConfigModule.forRoot()`), reading a `.env` file. `MongoUriFactory` (`src/core/mongo/mongo-uri.factory.ts`) builds `DATABASE_URI` by substituting `${DATABASE_HOST}`, `${DATABASE_PORT}`, `${DATABASE_DB}` and optionally `${DATABASE_USER}`/`${DATABASE_PASS}` into the template — this factory is the only place that assembles the connection string, so `.env` must set `DATABASE_URI` as a literal template string, not a final URI.
+Config comes through `@nestjs/config` (`ConfigModule.forRoot()`), reading a `.env` file. `MongoUriFactory` (`src/core/mongo/mongo-uri.factory.ts`) reads `DATABASE_URI`. Set it to a full MongoDB connection string pointing at an external instance (there is no local Mongo container); the factory's `${DATABASE_*}` placeholder substitution is legacy and unused. `TUITION_DATABASE_URI` is passed to the `tuition` service as `DB_URI` by `docker-compose.yaml`.
 
 Multiple env files exist for different targets: `.env` (active/local). Match variables against `.env.example` when adding new ones.
 
@@ -75,4 +75,4 @@ Mongoose schemas are defined with `@nestjs/mongoose` decorators (`@Schema`/`@Pro
 
 ### One-off scripts vs. migrations
 
-`migration/` holds Mongo shell scripts (`mongosh` syntax, e.g. `rename-question-fields.js`) for one-time data migrations, run manually against the target DB — there's no migration runner/framework wired in. `scripts/` holds MongoDB init scripts (`db.createUser(...)`) mounted into the `db` container via `docker-entrypoint-initdb.d`.
+`migration/` holds Mongo shell scripts (`mongosh` syntax, e.g. `rename-question-fields.js`) for one-time data migrations, run manually against the target DB — there's no migration runner/framework wired in.
