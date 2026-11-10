@@ -34,7 +34,8 @@ services:
     container_name: interview-tuition-api
     restart: unless-stopped
     environment:
-      DB_URI: mongodb://${TUITION_DATABASE_USER}:${TUITION_DATABASE_PASS}@db:27017/${TUITION_DATABASE_DB}
+      # Shared user lives in the main db, so authenticate against it
+      DB_URI: mongodb://${DATABASE_USER}:${DATABASE_PASS}@db:27017/${TUITION_DATABASE_DB}?authSource=${DATABASE_DB}
     depends_on:
       - db
 
@@ -43,9 +44,14 @@ services:
     container_name: interview-questions-api-db
     restart: unless-stopped
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: rootpwd
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER:?MONGO_ROOT_USER is required}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASS:?MONGO_ROOT_PASS is required}
       MONGO_INITDB_DATABASE: ${DATABASE_DB}
+      # Consumed by scripts/*.js (init scripts) to create app users
+      DATABASE_DB: ${DATABASE_DB}
+      DATABASE_USER: ${DATABASE_USER:?DATABASE_USER is required}
+      DATABASE_PASS: ${DATABASE_PASS:?DATABASE_PASS is required}
+      TUITION_DATABASE_DB: ${TUITION_DATABASE_DB}
     volumes:
       - db_data:/data/db
       - db_data:/data/configdb
